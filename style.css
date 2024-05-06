@@ -1,0 +1,12 @@
+.container {
+    height: 1080px;
+    background-color: coral;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+.game-field {
+    background-color: rgb(36, 55, 44);
+}
