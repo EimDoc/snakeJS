@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    <script src="snake.js"></script>
     <title>Snake</title>
 </head>
 <body>
@@ -14,10 +13,14 @@
             <h1>Play Snake Here</h1>
         </div>
         <div class="game">
-            <canvas width="400px" height="400px" class="game-field">
-                
-            </canvas>
+            <div class="game-score">
+                <span id="score-count" class="score-text">0</span>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas class="game-field" id="game-canvas"></canvas>
+            </div>
         </div>
+        <script src="snake.js"></script>
     </div>
 </body>
 </html>
