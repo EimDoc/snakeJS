@@ -37,7 +37,6 @@ function gameLoop () {
     }
     
     config.count = 0;
-    // context.fillStyle = "#24372c";
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     drawBerry();
@@ -82,7 +81,7 @@ function drawSnake () {
 
             for ( let i = index + 1; i < snake.tail.length; i++ ) {
                 if (el.x == snake.tail[i].x && el.y == snake.tail[i].y) {
-                    // refreshGame();
+                    refreshGame();
                 }
             }
 
@@ -109,12 +108,47 @@ function randomPositionBerry() {
 }
 
 function collisionBorder () {
-    //
+    if (snake.x > canvas.width) {
+        snake.x = 0;
+    } else if (snake.x < 0) {
+        snake.x = canvas.width;
+    } else if (snake.y > canvas.height) {
+        snake.y = 0;
+    } else if (snake.y < 0) {
+        snake.y = canvas.height;
+    }
 }
 
 function incScore () {
     score++;
     drawScore();
+}
+
+function refreshGame () {
+    config = {
+        count: 0,
+        maxCount: 6,
+        sizeCell: 16,
+        sizeBerry: 16 / 2
+    }
+    
+    snake = {
+        x: 0,
+        y: 0,
+        dx: config.sizeCell,
+        dy: 0,
+        tail: [],
+        maxTail: 4
+    }
+    
+    berry = {
+        x: 0,
+        y: 0
+    }
+
+    score = 0;
+    drawScore();
+    randomPositionBerry();
 }
 
 document.addEventListener("keydown",
