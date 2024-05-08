@@ -7,12 +7,12 @@ let config = {
     count: 0,
     maxCount: 6,
     sizeCell: 16,
-    sizeBerry: 16 / 4
+    sizeBerry: 16 / 2
 }
 
 let snake = {
-    x: 200,
-    y: 200,
+    x: 0,
+    y: 0,
     dx: config.sizeCell,
     dy: 0,
     tail: [],
@@ -20,13 +20,14 @@ let snake = {
 }
 
 let berry = {
-    x: 0,
-    y: 0
+    x: 20,
+    y: 20
 }
 
 const canvas = document.querySelector("#game-canvas");
 const context = canvas.getContext("2d");
-scoreBlock = document.querySelector(".game-score .score-text");
+scoreBlock = document.querySelector(".game-score .score-count");
+drawScore();
 
 function gameLoop () {
 
@@ -34,14 +35,18 @@ function gameLoop () {
     if (++config.count < config.maxCount) {
         return;
     }
+    
     config.count = 0;
+    // context.fillStyle = "#24372c";
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-    drawSnake();
     drawBerry();
+    drawSnake();
 
 }
 
 requestAnimationFrame( gameLoop );
+randomPositionBerry();
 
 function drawSnake () {
     snake.x += snake.dx;
@@ -56,6 +61,7 @@ function drawSnake () {
     }
 
     snake.tail.forEach(
+        
         function (el, index) {
             if (index == 0) {
                 context.fillStyle = "#FA0556";
@@ -64,17 +70,19 @@ function drawSnake () {
                 context.fillStyle = "#A00034";
             }
 
+            console.log(el);
+
             context.fillRect( el.x, el.y, config.sizeCell, config.sizeCell );
 
             if (el.x == berry.x && el.y == berry.y) {
-                ++snake.maxTail;
+                snake.maxTail++;
                 incScore();
                 randomPositionBerry();
             }
 
             for ( let i = index + 1; i < snake.tail.length; i++ ) {
                 if (el.x == snake.tail[i].x && el.y == snake.tail[i].y) {
-                    refreshGame();
+                    // refreshGame();
                 }
             }
 
@@ -84,7 +92,8 @@ function drawSnake () {
 }
 
 function drawBerry() {
-    // some code
+    context.fillStyle = "#ff0000";
+    context.fillRect(berry.x, berry.y, config.sizeBerry, config.sizeBerry);
 }
 
 function drawScore () {
@@ -92,7 +101,11 @@ function drawScore () {
 }
 
 function randomPositionBerry() {
-    //
+    const cellAmountX = canvas.width / config.sizeCell;
+    const cellAmountY = canvas.height / config.sizeCell;
+    berry.x = config.sizeCell * Math.floor(Math.random() * cellAmountX);
+    berry.y = config.sizeCell * Math.floor(Math.random() * cellAmountY);
+    console.log(berry);
 }
 
 function collisionBorder () {
@@ -103,3 +116,25 @@ function incScore () {
     score++;
     drawScore();
 }
+
+document.addEventListener("keydown",
+ function(e) {
+    switch (e.code) {
+        case "KeyW":
+            snake.dx = 0;
+            snake.dy = -config.sizeCell;
+            break;
+        case "KeyS":
+            snake.dx = 0;
+            snake.dy = config.sizeCell;
+            break;
+        case "KeyA":
+            snake.dx = -config.sizeCell;
+            snake.dy = 0;
+            break;
+        case "KeyD":
+            snake.dx = config.sizeCell;
+            snake.dy = 0;
+            break;
+    }
+ })
